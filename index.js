@@ -1,16 +1,13 @@
 const express = require('express');
 const app = express();
-
 const config = require('config');
-
-const router = require('./src/routes/');
+const router = require('./src/routes');
 
 require('./startup/config')(app, express);
 require('./startup/db')();
 require('./startup/logging')();
 
-
-app.use('/', router);
+app.use('/api', router);
 
 require('./src/middlewares/error')(app);
 

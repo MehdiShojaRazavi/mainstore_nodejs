@@ -1,17 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const validator = require('./validator');
-const service = require('./service');
+const controller = require('./controller');
 
-
-router.get('/', service.home);
-
-router.get('/users', service.getUsers);
+router.get('/list', controller.getUsers);
 
 router.post('/adduser', 
   validator.addUserValidator(),
-  service.validate,
-  service.addUser
+  controller.validate,
+  controller.addUser
 );
 
 module.exports = router;

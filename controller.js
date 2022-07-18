@@ -1,6 +1,6 @@
 const autoBind = require('auto-bind');
 const {validationResult} = require('express-validator');
-const User = require('../database/user');
+const User = require('./src/models/user');
 
 module.exports = class{
   constructor(){
@@ -15,17 +15,10 @@ module.exports = class{
       const errors = result.array();
       const data = [];
       errors.forEach(err => data.push(err.msg));
-      // res.status(400).json({
-      //   message: 'validation error',
-      //   data: messages
-      // })
-      this.response({
-        res,
-        status: 400,
-        success : false,
-        message: "validation error",
-        data
-      });
+      res.status(400).json({
+        message: 'validation error',
+        data: messages
+      })
       return false;
     }
     return true;
@@ -38,12 +31,13 @@ module.exports = class{
     next();
   }
 
-  response({res, message,success=true, status=200, data={}}){
-    res.status(status).json({
-      status,
-      success,
-      message,
-      data
-    });
-  };
+  // response({res, message,success=true, status=200, data={}}){
+  //   res.status(status).json({
+  //     status,
+  //     success,
+  //     message,
+  //     data
+  //   });
+  // };
+
 };
