@@ -1,28 +1,21 @@
 const service = require('./../../../controller');
-
+const {StatusCodes: HttpStatus} = require('http-status-codes')
 module.exports =  new (class extends service {
 
   async getUsers(req, res){
-    const users = await this.User.find();
-
-    if (!users) {
-      res.json({
-        code: 400,
-        message: "invalid eamil or password",
-      });
-    }
- 
-    res.json({
-      message: "ok",
-      data: users
+    await this.User.find().then((users) => {
+      res.status(HttpStatus.OK).json({
+        statusCode: HttpStatus.OK,
+        data : {
+          users
+        }
+      })
+    }).catch((error) => {
+      next(error);
     })
-
   }
 
   async addUser(req, res) {
-
-    console.log('add user route is active');
-    console.log('req.body:', req.body);
 
     const user = this.User({
       id: req.body.id,

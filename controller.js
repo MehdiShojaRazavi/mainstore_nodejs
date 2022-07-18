@@ -5,7 +5,6 @@ const User = require('./src/models/user');
 module.exports = class{
   constructor(){
     autoBind(this);
-    console.log('**class**: ',User);
     this.User = User;
   }
  

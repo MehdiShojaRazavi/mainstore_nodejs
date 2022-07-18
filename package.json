@@ -23,6 +23,8 @@
     "mongoose-timestamp": "^0.6.0",
     "morgan": "^1.10.0",
     "request": "^2.88.2",
+    "swagger-jsdoc": "^6.2.1",
+    "swagger-ui-express": "^4.5.0",
     "winston": "^3.8.1"
   }
 }
