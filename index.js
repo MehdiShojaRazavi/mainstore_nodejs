@@ -7,7 +7,7 @@ require('./startup/config')(app, express);
 require('./startup/db')();
 require('./startup/logging')();
 
-app.use('/api', router);
+app.use('/', router);
 
 require('./src/middlewares/error')(app);
 
