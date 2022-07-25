@@ -1,15 +1,16 @@
 const express = require('express');
 const router = express.Router();
 const validator = require('./validator');
-const controller = require('./controller');
+const {Controller} = require('./controller');
 
-router.get('/:id', controller.getUserById);
-router.get('/list', controller.getUsers);
+router.get('/list', Controller.getUsers);
 
 router.post('/add', 
-  // validator.addUserValidator(),
-  // controller.validate,
-  controller.addUser
+// validator.addUserValidator(),
+// controller.validate,
+Controller.addUser
 );
+
+router.get('/:id', Controller.getUserById);
 
 module.exports = router;

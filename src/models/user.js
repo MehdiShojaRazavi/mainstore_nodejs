@@ -5,18 +5,31 @@ const contactSchema = new mongoose.Schema({
   firstName: {type: String, required: true},
   lastName: {type: String, required: true},
   email: {type: String, required: true},
+  birthday: {type: String},
 })
 const defaultContact = {
   firstName: undefined,
   lastName: undefined,
   email: undefined,
+  mobile: undefined,
+  birthday: undefined,
 }
-
+const defaultOtp = {
+  code: 0,
+  expiresIn: 0,
+}
 const userSchema = new mongoose.Schema({
   id: {type: String , required: true},
-  contact: {type: contactSchema, default: defaultContact},
-  profilePictureUrl: {type: String, default: undefined},
-  username: {type: String, required: true, unique: true},
+  contact: {type: contactSchema, default: defaultContact, lowercase: true},
+  username: {type: String, required: true, lowercase: true},
+  password: {type: String},
+  otp: {type: Object, default: defaultOtp},
+  image: {type: String, default: undefined},
+  
+  role: {type: String, default: 'USER'},
+  cources: {type: [mongoose.Types.ObjectId], ref: 'course', default: []},
+  products: {type: [mongoose.Types.ObjectId], ref: 'product', default: []},
+  basket: {type: String},
 }, {
   timestamps: {
       createdAt: false,

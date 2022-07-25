@@ -1,38 +1,39 @@
 const config = require('config');
 const morgan = require('morgan');
 
-module.exports = function(app, express){
-  app.use(express.json());
-  app.use(express.urlencoded({extended: true}));
-  if (app.get('env') === 'development') app.use(morgan('dev'));
-  const swaggerUI = require("swagger-ui-express");
-  const swaggerJsDoc = require("swagger-jsdoc");
+module.exports = class Config{
+  constructor(app, express){
+    app.use(express.json());
+    app.use(express.urlencoded({extended: true}));
+    if (app.get('env') === 'development') app.use(morgan('dev'));
+    const swaggerUI = require("swagger-ui-express");
+    const swaggerJsDoc = require("swagger-jsdoc");
 
-  const options = {
-    definition: {
-      openapi: "3.0.0",
-      info: {
-        title: "simple store",
-        version: "1.0.0",
-        description: "A simple store is very useful for pragrammer",
-        termsOfService: "http://example.com/terms/",
-        contact: {
-          name: "Mehdi Shoja Razavi",
-          url: "https://shojastore.com",
-          email: "mehdishojarazavi@gmail.com",
+    const options = {
+      definition: {
+        openapi: "3.0.0",
+        info: {
+          title: "simple store",
+          version: "1.0.0",
+          description: "A simple store is very useful for pragrammer",
+          termsOfService: "http://example.com/terms/",
+          contact: {
+            name: "Mehdi Shoja Razavi",
+            url: "https://shojastore.com",
+            email: "mehdishojarazavi@gmail.com",
+          },
         },
+          servers: [
+          {
+            url: "http://localhost:8001",
+          },
+        ],
       },
-  
-      servers: [
-        {
-          url: "http://localhost:8001",
-        },
-      ],
-    },
-        apis: ["./src/routes/**/*.js"],
-  };
-  
-  const specs = swaggerJsDoc(options);
-  app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs, {explorer: true}));
+          apis: ["./src/routes/**/*.js"],
+    };
 
+    const specs = swaggerJsDoc(options);
+    app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs, {explorer: true}));
+  }
 }
+

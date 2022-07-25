@@ -4,7 +4,6 @@
  * description: user page section
  */
 
-
 /**
  * @swagger
  *  components:
@@ -34,6 +33,10 @@
  *        description: success
  *      400:
  *        description: not found
+ *      404:
+ *        description: A user with the specified ID was not found.
+ *      500:
+ *        description: Internal Server Error
  */
 
 /**
@@ -49,13 +52,20 @@
  *      in: path
  *      required: true
  *      type: string
+ *      example: '20220711000914145000000001'
  *    responses:
  *      200:
- *        description: success
+ *        description: removed the Permission
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/definitions/publicDefinition'
  *      400:
  *        description: not found
  *      404:
  *        description: A user with the specified ID was not found.
+ *      500:
+ *        description: Internal Server Error
  */
 
 /**
@@ -72,7 +82,7 @@
  *          schema:
  *            $ref: '#/components/schemas/Add-User'
  *    responses:
- *      200:
+ *      201:
  *        description: success
  *      400:
  *        description: not found

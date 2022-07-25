@@ -3,9 +3,16 @@ const app = express();
 const config = require('config');
 const router = require('./src/routes');
 
-require('./startup/config')(app, express);
-require('./startup/db')();
-require('./startup/logging')();
+const AppConfig = require('./startup/config'); //(app, express);
+const Db = require('./startup/db');
+const Logging = require('./startup/logging');
+
+new AppConfig(app, express);
+new Db();
+new Logging();
+
+
+
 
 app.use('/', router);
 

@@ -1,10 +1,15 @@
 const service = require('./../../../controller');
 const createError = require('http-errors');
 const {StatusCodes: HttpStatus} = require('http-status-codes')
-module.exports =  new (class extends service {
 
-  async getUsers(req, res){
-    await this.User.find().then((users) => {
+class Controller extends service {   
+  async getUsers(req, res, next){
+    await this.User.aggregate([
+    {
+      $project : {_id : 0, __v : 0, 'contact._id' : 0}
+    }
+    ]).then((users) => {
+      if (users.length < 1) throw createError.NotFound();
       res.status(HttpStatus.OK).json({
         statusCode: HttpStatus.OK,
         data : {
@@ -18,8 +23,16 @@ module.exports =  new (class extends service {
 
   async getUserById(req, res, next){
     const id = req.params.id;
-    await this.User.find({id}).then((users) => {
-      if (users.length < 1) throw createError.NotFound();
+    console.log(req.params.id);
+    await this.User.aggregate([
+        {
+          $match : {id}
+        },
+        {
+          $project : {_id : 0, __v : 0, 'contact._id' : 0}
+        }
+      ]).then((users) => {
+      if (!users) throw createError.NotFound();
       res.status(HttpStatus.OK).json({
         statusCode: HttpStatus.OK,
         data : {
@@ -52,4 +65,8 @@ module.exports =  new (class extends service {
     })
 
  }
-})();
+}
+
+module.exports =  {
+  Controller : new Controller()
+}
