@@ -25,7 +25,6 @@ const userSchema = new mongoose.Schema({
   password: {type: String},
   otp: {type: Object, default: defaultOtp},
   image: {type: String, default: undefined},
-
   role: {type: String, default: 'USER'},
   cources: {type: [mongoose.Types.ObjectId], ref: 'course', default: []},
   products: {type: [mongoose.Types.ObjectId], ref: 'product', default: []},
