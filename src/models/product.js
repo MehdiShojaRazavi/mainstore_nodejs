@@ -1,5 +1,13 @@
 const mongoose = require('mongoose');
 const { commentSchema } = require('./comments');
+const defaultFeature = {
+  length: '',
+  height: '',
+  width: '',
+  weight: '',
+  colors: [],
+  madeIn: ''
+};
 const productSchema = new mongoose.schema({
   title : {type: String, required: true},
   short_text : {type: String, required: true},
@@ -17,17 +25,10 @@ const productSchema = new mongoose.schema({
   type : {type: String, required: true}, // Online - physici
   format : {type: String},
   supplier : {type: mongoose.Types.ObjectId, ref:'user', required: true},
-  features : {type: Object, default: {
-    length: '',
-    height: '',
-    width: '',
-    weight: '',
-    colors: [],
-    madeIn: ''
-  }},
+  features : {type: Object, default: defaultFeature},
 });
 
 const Porduct = mongoose.model('product', productSchema);
 module.exports = {
   Porduct
-}
+};

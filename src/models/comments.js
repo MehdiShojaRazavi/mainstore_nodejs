@@ -12,4 +12,4 @@ const commentSchema = new mongoose.Schema({
 });
 module.exports = {
   commentSchema
-}
+};
