@@ -10,8 +10,6 @@ const contactSchema = new mongoose.Schema({
 const defaultContact = {
   firstName: undefined,
   lastName: undefined,
-  email: undefined,
-  mobile: undefined,
   birthday: undefined,
 }
 const defaultOtp = {
@@ -19,10 +17,11 @@ const defaultOtp = {
   expiresIn: 0,
 }
 const userSchema = new mongoose.Schema({
-  id: {type: String , required: true},
   contact: {type: contactSchema, default: defaultContact, lowercase: true},
   username: {type: String, required: true, lowercase: true},
   password: {type: String},
+  email: {type: String, required: true, lowercase: true},
+  mobile: {type: String, required: true, lowercase: true},
   otp: {type: Object, default: defaultOtp},
   image: {type: String, default: undefined},
   role: {type: String, default: 'USER'},

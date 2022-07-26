@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@hapi/joi": "^17.1.1",
     "auto-bind": "^4.0.0",
     "config": "^3.3.6",
     "debug": "^4.3.2",
