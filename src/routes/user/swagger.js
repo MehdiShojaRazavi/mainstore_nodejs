@@ -11,14 +11,18 @@
  *      Add-User:
  *        type: object
  *        properties:
- *          id:
- *            type: string
- *            description: the title of product
- *            example: 2222222222222
  *          username:
  *            type: string
- *            description: the title of product
- *            example: username123 
+ *            description: Enter unique username
+ *            example: johndoe123 
+ *          email:
+ *            type: string
+ *            description: Enter unique email
+ *            example: johndoe123@ccc.com 
+ *          mobile:
+ *            type: string
+ *            description: Enter unique mobile
+ *            example: '09123456789' 
  */
 
 /**
@@ -71,23 +75,23 @@
 /**
  * @swagger
  *  /user/add:
- *  post:
- *    summary: add user
- *    tags: [UserPage]
- *    description: add user
- *    requestBody:
- *      required: true
- *      content:
- *        multipart/form-data:
- *          schema:
- *            $ref: '#/components/schemas/Add-User'
- *    responses:
- *      201:
- *        description: success
- *      400:
- *        description: not found
- *      404:
- *        description: A user with the specified ID was not found.
- *      500:
- *        description: Internal Server Error
+ *    post:
+ *      tags: [UserPage]
+ *      summary: add user
+ *      description: add user
+ *      requestBody:
+ *        required: true
+ *        content:
+ *          application/x-www-form-urlencoded:
+ *            schema:
+ *              $ref: '#/components/schemas/Add-User'
+ *      responses:
+ *        201:
+ *          description: success
+ *        400:
+ *          description: not found
+ *        404:
+ *          description: A user with the specified ID was not found.
+ *        500:
+ *          description: Internal Server Error
  */
