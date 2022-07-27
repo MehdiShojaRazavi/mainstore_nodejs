@@ -1,10 +1,9 @@
 const controller = require('./../../../controller');
 const createError = require('http-errors');
 const {StatusCodes: HttpStatus} = require('http-status-codes');
-const {validateSchema} = require('./validate');
+const {validateSchema} = require('./validator');
 class Controller extends controller {   
   async getUsers(req, res, next){
-    console.log(11)
     await this.User.aggregate([
     {
       $project : {_id : 0, __v : 0, 'contact._id' : 0}

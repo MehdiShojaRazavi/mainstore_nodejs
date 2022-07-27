@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 const timestamp = require('mongoose-timestamp');
 
 const contactSchema = new mongoose.Schema({
-  firstName: {type: String, lowercase: true},
-  lastName: {type: String, lowercase: true},
+  firstName: {type: String, lowercase: true}, //, required: true
+  lastName: {type: String, lowercase: true}, //, required: true
   birthday: {type: String},
 })
 const defaultContact = {
