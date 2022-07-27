@@ -2,9 +2,8 @@ const mongoose = require('mongoose');
 const timestamp = require('mongoose-timestamp');
 
 const contactSchema = new mongoose.Schema({
-  firstName: {type: String, required: true},
-  lastName: {type: String, required: true},
-  email: {type: String, required: true},
+  firstName: {type: String, lowercase: true},
+  lastName: {type: String, lowercase: true},
   birthday: {type: String},
 })
 const defaultContact = {
@@ -17,7 +16,7 @@ const defaultOtp = {
   expiresIn: 0,
 }
 const userSchema = new mongoose.Schema({
-  contact: {type: contactSchema, default: defaultContact, lowercase: true},
+  contact: {type: contactSchema, default: defaultContact},
   username: {type: String, required: true, lowercase: true},
   password: {type: String},
   email: {type: String, required: true, lowercase: true},

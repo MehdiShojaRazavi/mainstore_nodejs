@@ -23,7 +23,6 @@ class Controller extends controller {
   };
 
   async addUser(req, res, next) {
-    console.log(req.body);
     await validateSchema.validateAsync(req.body);
     const {username, email, mobile} = req.body;
     await this.User.create({
@@ -39,7 +38,6 @@ class Controller extends controller {
         }
       })
     }).catch((error) => {
-      console.log('next error ....');
       next(error);
     })
 

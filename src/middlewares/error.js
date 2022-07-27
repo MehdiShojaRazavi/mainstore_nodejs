@@ -2,16 +2,10 @@ const winston = require('winston');
 const createErrors = require('http-errors');
 
 module.exports =  function(app){
-  
   app.use((req, res, next)=>{
-    console.log('url is : req, res, next');
-
     next(createErrors.NotFound());
   });
-
   app.use((err, req, res, next)=>{
-    console.log('url is : err, req, res, next');
-    
     winston.error(err.message, err);
     const serverError = createErrors.InternalServerError;
     const status = err?.status || serverError.status;
@@ -23,7 +17,6 @@ module.exports =  function(app){
       }
     });
   });
-
 };
 
 

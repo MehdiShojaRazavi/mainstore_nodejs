@@ -10,7 +10,7 @@
  *    schemas:
  *      Add-User:
  *        type: object
- *        properties:
+ *        properties: 
  *          username:
  *            type: string
  *            description: Enter unique username

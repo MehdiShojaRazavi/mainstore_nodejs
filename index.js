@@ -11,9 +11,6 @@ new AppConfig(app, express);
 new Db();
 new Logging();
 
-
-
-
 app.use('/', router);
 
 require('./src/middlewares/error')(app);
