@@ -7,39 +7,39 @@ const {EXPIRES_IN} = require('./../../utils/constants');
 
 class Controller extends controller {   
   async getOtp(req, res, next) {
-    console.log(req.body);
-    const {mobile} = req.body;
-    await validateSchema.validateAsync(mobile);
-    const result = await this.checkExistUser(mobile);
-    if (!result) throw createError.BadRequest();
-    const code = randomNumberGenarator();
-    let otp = {
-      code, 
-      expiresIn: EXPIRES_IN
-    };
-    await this.User.updateOne(
-      {mobile},
-      {$set: otp}).then((user) => {
-        console.log('user:', user);
-        if (user.modifiedCount == 0) throw createError.BadRequest('otp update failed...');
-        if (!user) throw createError.InternalServerError();
-        res.status(HttpStatus.CREATED).json({
-          statusCode: HttpStatus.CREATED,
-          data : {
-            user
-          }
-      })
-    }).catch((error) => {
+    try{
+      const {mobile} = req.body;
+      await validateSchema.validateAsync({mobile});
+      //const result1 = await this.checkExistUser(mobile, next);
+      //if (!result1) throw createError.NotFound("user not found");
+      //console.log('result1:', result1);
+      const code = randomNumberGenarator();
+      let otp = {
+        code, 
+        expiresIn: EXPIRES_IN
+      };
+      const updateResult = await this.User.updateOne({mobile}, {$set: {otp}}, {upsert: true})
+      if (updateResult.modifiedCount == 0 && updateResult.upsertedCount == 0) throw createError.Unauthorized();
+      if (!updateResult) throw createError.InternalServerError();
+      res.status(HttpStatus.CREATED).json({
+        statusCode: HttpStatus.CREATED,
+        data : {
+          updateResult
+        }
+      });
+    }catch(error){
+      console.log('catch getOtp...')
       next(error);
-    })
-
+    }
   };
-  async checkExistUser(mobile){
-    await this.User.findOne({mobile}).then((user) => {
+  async checkExistUser(mobile, next){
+    console.log('mobile:', mobile);
+    try{
+      const user = await this.User.findOne({mobile})
       return !!user;
-    }).catch((error) => {
-      next(error);
-    })
+    }catch(error){
+      next(createError.InternalServerError(error.message));
+    }
   };
 }
 

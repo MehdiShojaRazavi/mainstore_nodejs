@@ -12,10 +12,11 @@
  *        type: object
  *        required:
  *          -   mobile
- *        properties:
+  *        properties:
  *          mobile:
  *            type: string
  *            description: the user mobile for signup/signin
+ *            example: '09123456789'
  */
 
 /**
