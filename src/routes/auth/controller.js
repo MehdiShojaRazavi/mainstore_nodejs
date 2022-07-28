@@ -10,9 +10,6 @@ class Controller extends controller {
     try{
       const {mobile} = req.body;
       await validateSchema.validateAsync({mobile});
-      //const result1 = await this.checkExistUser(mobile, next);
-      //if (!result1) throw createError.NotFound("user not found");
-      //console.log('result1:', result1);
       const code = randomNumberGenarator();
       let otp = {
         code, 
@@ -28,17 +25,15 @@ class Controller extends controller {
         }
       });
     }catch(error){
-      console.log('catch getOtp...')
       next(error);
     }
   };
   async checkExistUser(mobile, next){
-    console.log('mobile:', mobile);
     try{
       const user = await this.User.findOne({mobile})
       return !!user;
     }catch(error){
-      next(createError.InternalServerError(error.message));
+      next(error);
     }
   };
 }
