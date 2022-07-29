@@ -3,9 +3,9 @@ const jwt = require('jsonwebtoken');
 const { User } = require('../models/user');
 const { ACCESS_TOKEN_SECRET_KEY } = require('../utils/constants');
 function verifyAccessToken(req, res, next){
-  const header = req.header;
-  const [bearer, token] = header?.accessToken?.split(' ');
-  if (!token && bearer?.tolowercase() !== "bearer"){
+  const headers = req.headers;
+  const [bearer, token] = headers?.['access-token']?.split(' ') || [];
+  if (token && bearer?.toLowerCase() == "bearer"){
     jwt.verify(token, ACCESS_TOKEN_SECRET_KEY, async (err, payload) => {
       if (err) next(createError.Unauthorized("Please login"));
       const {mobile} = payload || {};
