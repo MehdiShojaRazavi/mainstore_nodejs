@@ -6,16 +6,16 @@ function verifyAccessToken(req, res, next){
   const header = req.header;
   const [bearer, token] = header?.accessToken?.split(' ');
   if (!token && bearer?.tolowercase() !== "bearer"){
-    jwt.verify(token, ACCESS_TOKEN_SECRET_KEY, (err, payload) => {
-      if (err) throw createError.Unauthorized("Please login");
-      const {mobile} = payload;
+    jwt.verify(token, ACCESS_TOKEN_SECRET_KEY, async (err, payload) => {
+      if (err) next(createError.Unauthorized("Please login"));
+      const {mobile} = payload || {};
       const user = await User.findOne({mobile});
-      if (!user) throw createError.NotFound('Account not found');
+      if (!user) next(createError.NotFound('Account not found'));
       res.user = user;
       return next();
     })
-    throw createError.Unauthorized("Please login");
   }
+  else return next(createError.Unauthorized("Please login"));
 };
 module.exports = {
   verifyAccessToken

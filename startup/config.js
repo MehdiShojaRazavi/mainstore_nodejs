@@ -1,8 +1,9 @@
 const config = require('config');
 const morgan = require('morgan');
-
+const cors = require('cors');
 module.exports = class Config{
   constructor(app, express){
+    app.use(cors());
     app.use(express.json());
     app.use(express.urlencoded({extended: true}));
     if (app.get('env') === 'development') app.use(morgan('dev'));
