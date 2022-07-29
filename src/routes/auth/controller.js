@@ -21,7 +21,7 @@ class Controller extends controller {
       res.status(HttpStatus.CREATED).json({
         statusCode: HttpStatus.CREATED,
         data : {
-          user
+          code
         } 
       });
     }catch(error){

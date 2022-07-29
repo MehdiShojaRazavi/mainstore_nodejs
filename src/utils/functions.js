@@ -16,7 +16,6 @@ function signAccessToken(userId){
         if (!user) throw createError.NotFound();
         const payload = {
             mobile: user.mobile,
-            userId: user._id
         };
         const SECRET_KEY = ACCESS_TOKEN_SECRET_KEY
         const options = {
