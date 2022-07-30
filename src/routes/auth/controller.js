@@ -37,12 +37,14 @@ class Controller extends controller {
       if (!user) throw createError.NotFound('User not found')
       if (user.otp.code != code) throw createError.Unauthorized('Invalid code');
       const now = Date.now();
-      if (+user.expiresIn > now) throw createError.Unauthorized('Code has expired');
-      const token = await signAccessToken(user._id);
+      if (+user.expiresIn < now) throw createError.Unauthorized('Code has expired');
+      const accessToken = await signAccessToken(user?._id);
+      const refreshToken = await signRefreshToken(user?._id);
       res.status(HttpStatus.OK).json({
         statusCode: HttpStatus.OK,
         data : {
-          token
+          accessToken,
+          refreshToken
         }
       });
     }catch(error){
@@ -50,6 +52,24 @@ class Controller extends controller {
     }
   };
 
+  async refreshToken(req, res, next){
+    try{
+      const {refreshToken} = req.body;
+      const mobile = await VerifyRefreshToken(refreshToken);
+      const user = await this.User.findOne({mobile});
+      const accessToken = await signAccessToken(user?._id);
+      const newRefreshToken = await signRefreshToken(user?._id);
+      return res.status(HttpStatus.OK).json({
+        statusCode: HttpStatus.OK,
+        data : {
+          accessToken,
+          refreshToken: newRefreshToken
+        }
+      });
+    }catch(error){
+      next(error)
+    }
+  }
   async checkExistUser(mobile, next){
     try{
       const user = await this.User.findOne({mobile})

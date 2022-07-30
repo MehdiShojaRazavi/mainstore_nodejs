@@ -31,6 +31,14 @@
  *            type: string
  *            description: the user mobile for signup/signin
  *            example: '84539'
+ *      refresh-token:
+ *        type: object
+ *        required:
+ *          -   refreshToken
+ *        properties:
+ *          mobile:
+ *            type: string
+ *            description: refreshToken
  */
 
 /**
@@ -67,6 +75,33 @@
  *      tags: [User-Authentication]
  *      summary: login user in userpanel with phone number
  *      description: one time password(OTP) login
+ *      requestBody:
+ *        required: true
+ *        content: 
+ *          application/x-www-form-urlencoded:
+ *            schema:
+ *              $ref: '#/components/schemas/CheckOTP'
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/CheckOTP'
+ *      responses:
+ *        201: 
+ *          description: Success
+ *        400: 
+ *          description: Bad Request
+ *        401: 
+ *          description: Unauthorization
+ *        500: 
+ *          description: Internal Server Error 
+ */
+
+/**
+ * @swagger
+ *  /auth/refresh-token:
+ *    post:
+ *      tags: [User-Authentication]
+ *      summary: send refresh token for get new token and refresh token
+ *      description: refresh token
  *      requestBody:
  *        required: true
  *        content: 

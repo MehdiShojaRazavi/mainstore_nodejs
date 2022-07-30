@@ -27,6 +27,20 @@ function signAccessToken(userId){
         })
     });
 };
+function VerifyRefreshToken(token) {
+    return new Promise((resolve, reject) => {
+        JWT.verify(token, REFRESH_TOKEN_SECRET_KEY, async (err, payload) => {
+            if (err) reject(createError.Unauthorized("Please login"))
+            const { mobile } = payload || {};
+            const user = await UserModel.findOne({ mobile }, { password: 0, otp: 0 })
+            if (!user) reject(createError.Unauthorized("Account not found"))
+            const refreshToken = await User.findOne(user?._id);
+            if (!refreshToken) reject(createError.Unauthorized("Login faild"))
+            if (token === refreshToken) return resolve(mobile);
+            reject(createError.Unauthorized("Login faild"))
+        })
+    })
+}
 module.exports = {
     idGenerator,
     randomNumberGenarator,
