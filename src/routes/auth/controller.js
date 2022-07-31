@@ -58,11 +58,8 @@ class Controller extends controller {
 
   async refreshToken(req, res, next){
     try{
-      console.log(req.body);
       const { refreshToken }  = req.body;
-      console.log(refreshToken);
       const mobile = await verifyRefreshToken(refreshToken);
-      console.log(mobile);
       const user = await this.User.findOne({mobile});
       const accessToken = await signAccessToken(user?._id);
       const newRefreshToken = await signRefreshToken(user?._id);
