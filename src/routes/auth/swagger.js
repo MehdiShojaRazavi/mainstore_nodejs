@@ -36,7 +36,7 @@
  *        required:
  *          -   refreshToken
  *        properties:
- *          mobile:
+ *          refreshToken:
  *            type: string
  *            description: refreshToken
  */
@@ -107,10 +107,10 @@
  *        content: 
  *          application/x-www-form-urlencoded:
  *            schema:
- *              $ref: '#/components/schemas/CheckOTP'
+ *              $ref: '#/components/schemas/refresh-token'
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/CheckOTP'
+ *              $ref: '#/components/schemas/refresh-token'
  *      responses:
  *        201: 
  *          description: Success

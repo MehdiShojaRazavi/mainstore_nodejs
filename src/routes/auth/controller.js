@@ -2,7 +2,11 @@ const controller = require('./../../../controller');
 const createError = require('http-errors');
 const {StatusCodes: HttpStatus} = require('http-status-codes');
 const {getOtpSchema, checkOtpSchema} = require('./validator');
-const {randomNumberGenarator, signAccessToken} = require('../../utils/functions');
+const {randomNumberGenarator, 
+       signAccessToken, 
+       signRefreshToken,
+       verifyRefreshToken
+      } = require('./../../utils/functions');
 const {EXPIRES_IN} = require('./../../utils/constants');
 
 class Controller extends controller {   
@@ -54,8 +58,11 @@ class Controller extends controller {
 
   async refreshToken(req, res, next){
     try{
-      const {refreshToken} = req.body;
-      const mobile = await VerifyRefreshToken(refreshToken);
+      console.log(req.body);
+      const { refreshToken }  = req.body;
+      console.log(refreshToken);
+      const mobile = await verifyRefreshToken(refreshToken);
+      console.log(mobile);
       const user = await this.User.findOne({mobile});
       const accessToken = await signAccessToken(user?._id);
       const newRefreshToken = await signRefreshToken(user?._id);
