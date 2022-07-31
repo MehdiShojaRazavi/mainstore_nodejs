@@ -4,10 +4,12 @@ const config = require('config');
 const router = require('./src/routes');
 
 const AppConfig = require('./startup/config'); //(app, express);
+const redisDB = require('./startup/initRedis');
 const Db = require('./startup/db');
 const Logging = require('./startup/logging');
 
 new AppConfig(app, express);
+new redisDB();
 new Db();
 new Logging();
 
