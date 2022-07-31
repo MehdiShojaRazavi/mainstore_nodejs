@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const createError = require('http-errors');
 const {User} = require('./../models/user');
 const { ACCESS_TOKEN_SECRET_KEY, REFRESH_TOKEN_SECRET_KEY } = require("./constants");
+const redisClient = require("../../startup/initRedis");
 
 function idGenerator(){
     return moment().format("YYYYMMDDHHmmssSSS") + String(process.hrtime()[1]).padStart(9, 0)
@@ -34,12 +35,12 @@ function signRefreshToken(userId){
         const payload = {
             mobile: user.mobile,
         };
-        const SECRET_KEY = ACCESS_TOKEN_SECRET_KEY
         const options = {
             expiresIn : '1y'
         };
-        jwt.sign(payload, REFRESH_TOKEN_SECRET_KEY, options, (error, token) => {
+        jwt.sign(payload, REFRESH_TOKEN_SECRET_KEY, options, async(error, token) => {
             if (error) reject(createError.InternalServerError());
+            await redisClient.setex(userId, (365*24*60*60), token);
             resolve(token);
         })
     });
@@ -51,7 +52,9 @@ function verifyRefreshToken(token) {
             const { mobile } = payload || {};
             const user = await User.findOne({ mobile }, { password: 0, otp: 0 })
             if (!user) reject(createError.Unauthorized("Account not found"))
-            resolve(mobile);
+            const refreshToken = await redisClient.get(user._id);
+            if (token === refreshToken) return resolve(mobile);
+            reject(createError.Unauthorized('Login Faild'));
         });
     });
 };
