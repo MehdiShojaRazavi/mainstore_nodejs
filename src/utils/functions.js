@@ -29,6 +29,7 @@ function signAccessToken(userId){
     });
 };
 function signRefreshToken(userId){
+    console.log('signRefreshToken');
     return new Promise(async (resolve, reject) => {
         const user = await User.findById(userId);
         if (!user) throw createError.NotFound();
@@ -40,7 +41,10 @@ function signRefreshToken(userId){
         };
         jwt.sign(payload, REFRESH_TOKEN_SECRET_KEY, options, async(error, token) => {
             if (error) reject(createError.InternalServerError());
-            await redisClient.setex(userId, (365*24*60*60), token);
+            await redisClient.set(userId.valueOf(), token, {
+                EX: (365*24*60*60),
+                NX: true
+              });
             resolve(token);
         })
     });
@@ -52,7 +56,7 @@ function verifyRefreshToken(token) {
             const { mobile } = payload || {};
             const user = await User.findOne({ mobile }, { password: 0, otp: 0 })
             if (!user) reject(createError.Unauthorized("Account not found"))
-            const refreshToken = await redisClient.get(user._id);
+            const refreshToken = await redisClient.get(user._id.valueOf());
             if (token === refreshToken) return resolve(mobile);
             reject(createError.Unauthorized('Login Faild'));
         });
