@@ -9,7 +9,7 @@ const Db = require('./startup/db');
 const Logging = require('./startup/logging');
 
 new AppConfig(app, express);
-new redisDB();
+redisDB;
 new Db();
 new Logging();
 
