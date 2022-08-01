@@ -7,6 +7,7 @@ const {randomNumberGenarator,
        signRefreshToken,
        verifyRefreshToken
       } = require('./../../utils/functions');
+const { ROLES } = require('../../utils/constants');
 
 class Controller extends controller {   
   async getOtp(req, res, next) {
@@ -18,7 +19,15 @@ class Controller extends controller {
         code, 
         expiresIn: (new Date().getTime() + 120000)
       };
-      const user = await this.User.updateOne({mobile}, {$set: {otp}}, {upsert: true})
+      const user = await this.User.updateOne(
+        {mobile}, 
+        {
+          $set: {
+            mobile,
+            otp,
+            roles: [ROLES.USER]
+          }
+        }, {upsert: true})
       if (user.modifiedCount == 0 && user.upsertedCount == 0) throw createError.Unauthorized();
       if (!user) throw createError.InternalServerError();
       res.status(HttpStatus.CREATED).json({

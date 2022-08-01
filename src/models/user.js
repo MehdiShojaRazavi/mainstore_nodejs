@@ -23,7 +23,7 @@ const userSchema = new mongoose.Schema({
   mobile: {type: String, required: true, lowercase: true},
   otp: {type: Object, default: defaultOtp},
   image: {type: String, default: undefined},
-  role: {type: String, default: 'USER'},
+  roles: {type: String, default: 'USER'},
   cources: {type: [mongoose.Types.ObjectId], ref: 'course', default: []},
   products: {type: [mongoose.Types.ObjectId], ref: 'product', default: []},
   basket: {type: String},
