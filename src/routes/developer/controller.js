@@ -2,6 +2,7 @@ const controller = require('./../../../controller');
 const createError = require('http-errors');
 const {StatusCodes: HttpStatus} = require('http-status-codes');
 const bcrypt = require('bcrypt');
+const { randomNumberGenarator } = require('../../utils/functions');
 class Controller extends controller {   
   hashPassword(req, res, next){
     try{
@@ -12,6 +13,19 @@ class Controller extends controller {
         statusCode: HttpStatus.OK,
         data : {
           hashPassword
+        }
+      });
+    }catch(error){
+      next(error);
+    }
+  };
+  getRandomNumber(req, res, next){
+    try{
+      const randomNumber = randomNumberGenarator().toString();
+      res.status(HttpStatus.OK).json({
+        statusCode: HttpStatus.OK,
+        data : {
+          randomNumber
         }
       });
     }catch(error){

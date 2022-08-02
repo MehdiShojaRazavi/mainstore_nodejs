@@ -26,3 +26,21 @@
  *        500:
  *          description: Internal Server Error
  */
+
+/**
+ * @swagger
+ *  /developer/random-number:
+ *    get:
+ *      summary: get random number
+ *      tags: [Developer-Tools]
+ *      description: get get random number
+ *      responses:
+ *        200:
+ *          description: success
+ *        400:
+ *          description: not found
+ *        404:
+ *          description: A user with the specified ID was not found.
+ *        500:
+ *          description: Internal Server Error
+ */
