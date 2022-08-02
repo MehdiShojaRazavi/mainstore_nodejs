@@ -1,13 +1,14 @@
 const createError = require('http-errors');
 const {StatusCodes: HttpStatus} = require('http-status-codes');
 const {addCategorySchema} = require('./validator');
+const { Category } = require('./../../../models/category');
 
 class Controller {
   async addCategory(req, res, next) {
     await addCategorySchema.validateAsync(req.body);
     const {title, parent} = req.body;
     console.log(title, parent);
-    await this.Category.create({
+    await Category.create({
       title,
       parent
     }).then((category) => {

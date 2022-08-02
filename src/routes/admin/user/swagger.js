@@ -27,7 +27,7 @@
 
 /**
  * @swagger
- *  /user/list:
+ *  /admin/user/list:
  *  get:
  *    summary: list of all users
  *    tags: [UserPage]
@@ -45,7 +45,7 @@
 
 /**
  * @swagger
- *  /user/{id}:
+ *  /admin//user/{id}:
  *  get:
  *    summary: get user by id
  *    tags: [UserPage]
@@ -70,7 +70,7 @@
 
 /**
  * @swagger
- *  /user/add:
+ *  /admin//user/add:
  *    post:
  *      tags: [UserPage]
  *      summary: add user

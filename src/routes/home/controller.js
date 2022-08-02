@@ -3,7 +3,7 @@ const createError = require('http-errors');
 const {StatusCodes: HttpStatus} = require('http-status-codes');
 const {randomNumberGenarator, signAccessToken} = require('../../utils/functions');
 
-class Controller extends controller {   
+class Controller {   
   async indexPage(req, res, next) {
     try{
       res.status(HttpStatus.OK).json({

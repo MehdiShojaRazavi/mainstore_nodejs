@@ -22,7 +22,7 @@
 
 /**
  * @swagger
- *  /category/add:
+ *  /admin/category/add:
  *    post:
  *      tags: [CategoryPage]
  *      summary: add category

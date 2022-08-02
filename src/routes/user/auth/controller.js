@@ -9,7 +9,7 @@ const {randomNumberGenarator,
       } = require('./../../../utils/functions');
 const { ROLES } = require('../../../utils/constants');
 
-class Controller {   
+class authController {   
   async getOtp(req, res, next) {
     try{
       const {mobile} = req.body;
@@ -27,7 +27,7 @@ class Controller {
             otp,
             roles: [ROLES.USER]
           }
-        }, {upsert: true})
+        }, {upsert: true});
       if (user.modifiedCount == 0 && user.upsertedCount == 0) throw createError.Unauthorized();
       if (!user) throw createError.InternalServerError();
       res.status(HttpStatus.CREATED).json({
@@ -40,7 +40,6 @@ class Controller {
       next(error);
     }
   };
-
   async checkOtp(req, res, next){
     try{
       await checkOtpSchema.validateAsync(req.body);
@@ -63,7 +62,6 @@ class Controller {
       next(error);
     }
   };
-
   async refreshToken(req, res, next){
     try{
       const { refreshToken }  = req.body;
@@ -93,5 +91,5 @@ class Controller {
 }
 
 module.exports =  {
-  Controller : new Controller()
+  Controller : new authController()
 }

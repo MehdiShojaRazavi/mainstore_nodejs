@@ -21,7 +21,6 @@ class Controller {
       next(error);
     })
   };
-
   async addUser(req, res, next) {
     await validateSchema.validateAsync(req.body);
     const {username, email, mobile} = req.body;
@@ -43,7 +42,6 @@ class Controller {
     })
 
   };
-
   async getUserById(req, res, next){
     const id = req.params.id;
     console.log(req.params.id);
@@ -67,7 +65,6 @@ class Controller {
       next(error);
     })
   };
-
 }
 
 module.exports =  {
