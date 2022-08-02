@@ -1,10 +1,11 @@
-const controller = require('./../../../controller');
 const createError = require('http-errors');
-const {StatusCodes: HttpStatus} = require('http-status-codes');
-const {validateSchema} = require('./validator');
-class Controller extends controller {   
+const { StatusCodes: HttpStatus } = require('http-status-codes');
+const { validateSchema } = require('./validator');
+const { User } = require('./../../../models/user')
+
+class Controller {   
   async getUsers(req, res, next){
-    await this.User.aggregate([
+    await User.aggregate([
     {
       $project : {_id : 0, __v : 0, 'contact._id' : 0}
     }
@@ -24,7 +25,7 @@ class Controller extends controller {
   async addUser(req, res, next) {
     await validateSchema.validateAsync(req.body);
     const {username, email, mobile} = req.body;
-    await this.User.create({
+    await User.create({
       username,
       email,
       mobile
@@ -34,7 +35,8 @@ class Controller extends controller {
         statusCode: HttpStatus.CREATED,
         data : {
           user
-        }
+        },
+        message : 'Added user successfully'
       })
     }).catch((error) => {
       next(error);
@@ -45,7 +47,7 @@ class Controller extends controller {
   async getUserById(req, res, next){
     const id = req.params.id;
     console.log(req.params.id);
-    await this.User.aggregate([
+    await User.aggregate([
         {
           $match : {id}
         },

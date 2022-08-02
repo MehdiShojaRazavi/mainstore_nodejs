@@ -1,9 +1,8 @@
-const controller = require('./../../../controller');
-const createError = require('http-errors');
 const {StatusCodes: HttpStatus} = require('http-status-codes');
 const bcrypt = require('bcrypt');
-const { randomNumberGenarator } = require('../../utils/functions');
-class Controller extends controller {   
+const { randomNumberGenarator } = require('./../../utils/functions');
+
+class Controller {   
   hashPassword(req, res, next){
     try{
       const { password } = req.params;

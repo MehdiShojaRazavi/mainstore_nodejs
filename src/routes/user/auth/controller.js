@@ -1,15 +1,15 @@
-const controller = require('./../../../controller');
 const createError = require('http-errors');
-const {StatusCodes: HttpStatus} = require('http-status-codes');
-const {getOtpSchema, checkOtpSchema} = require('./validator');
+const { StatusCodes: HttpStatus } = require('http-status-codes');
+const { getOtpSchema, checkOtpSchema } = require('./validator');
+const { User } = require('./../../../models/user');
 const {randomNumberGenarator, 
        signAccessToken, 
        signRefreshToken,
        verifyRefreshToken
-      } = require('./../../utils/functions');
-const { ROLES } = require('../../utils/constants');
+      } = require('./../../../utils/functions');
+const { ROLES } = require('../../../utils/constants');
 
-class Controller extends controller {   
+class Controller {   
   async getOtp(req, res, next) {
     try{
       const {mobile} = req.body;
@@ -19,7 +19,7 @@ class Controller extends controller {
         code, 
         expiresIn: (new Date().getTime() + 120000)
       };
-      const user = await this.User.updateOne(
+      const user = await User.updateOne(
         {mobile}, 
         {
           $set: {
@@ -45,7 +45,7 @@ class Controller extends controller {
     try{
       await checkOtpSchema.validateAsync(req.body);
       const {mobile, code} = req.body;
-      const user = await this.User.findOne({mobile});
+      const user = await User.findOne({mobile});
       if (!user) throw createError.NotFound('User not found')
       if (user.otp.code != code) throw createError.Unauthorized('Invalid code');
       const now = Date.now();
@@ -68,7 +68,7 @@ class Controller extends controller {
     try{
       const { refreshToken }  = req.body;
       const mobile = await verifyRefreshToken(refreshToken);
-      const user = await this.User.findOne({mobile});
+      const user = await User.findOne({mobile});
       const accessToken = await signAccessToken(user?._id);
       const newRefreshToken = await signRefreshToken(user?._id);
       return res.status(HttpStatus.OK).json({
@@ -84,7 +84,7 @@ class Controller extends controller {
   }
   async checkExistUser(mobile, next){
     try{
-      const user = await this.User.findOne({mobile})
+      const user = await User.findOne({mobile})
       return !!user;
     }catch(error){
       next(error);

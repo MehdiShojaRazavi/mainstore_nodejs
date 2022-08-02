@@ -1,8 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const {Controller} = require('./controller');
-const {verifyAccessToken} = require('./../../middlewares/verifyAccessToken');
 
-router.get('/', verifyAccessToken, Controller.indexPage);
+router.post('/add', Controller.addCategory);
 
 module.exports = router;

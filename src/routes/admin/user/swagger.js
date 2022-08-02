@@ -59,11 +59,7 @@
  *      example: '20220711000914145000000001'
  *    responses:
  *      200:
- *        description: removed the Permission
- *        content:
- *          application/json:
- *            schema:
- *              $ref: '#/definitions/publicDefinition'
+ *        description: success
  *      400:
  *        description: not found
  *      404:
