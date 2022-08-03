@@ -17,6 +17,7 @@
  *            example: johndoe123 
  *          parent:
  *            type: string
+ *            allowEmptyValue: true
  *            description: Enter parent
  */
 
@@ -28,7 +29,6 @@
  *      summary: add category
  *      description: add category
  *      requestBody:
- *        required: true
  *        content:
  *          application/x-www-form-urlencoded:
  *            schema:
