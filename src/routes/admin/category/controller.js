@@ -5,13 +5,13 @@ const { Category } = require('./../../../models/category');
 
 class Controller {
   async addCategory(req, res, next) {
-    await addCategorySchema.validateAsync(req.body);
-    const {title, parent} = req.body;
-    console.log(title, parent);
-    await Category.create({
-      title,
-      parent
-    }).then((category) => {
+    try{
+      console.table(req.body);
+      const {title, parent} = req.body;
+      console.log(title, parent);
+      await addCategorySchema.validateAsync(req.body);
+      console.log(title);
+      const category = await Category.create({title, parent});
       if (!category) throw createError.InternalServerError();
       res.status(HttpStatus.CREATED).json({
         statusCode: HttpStatus.CREATED,
@@ -20,9 +20,9 @@ class Controller {
         },
         message: 'Added category successfully'
       })
-    }).catch((error) => {
+    }catch(error) {
       next(error);
-    })
+    };
   };
 }
 
