@@ -46,31 +46,31 @@
 /**
  * @swagger
  *  /admin//user/{id}:
- *  get:
- *    summary: get user by id
- *    tags: [UserPage]
- *    description: get user by id
- *    parameters:
- *    - name: id
- *      description: user Id
- *      in: path
- *      required: true
- *      type: string
- *      example: '20220711000914145000000001'
- *    responses:
- *      200:
- *        description: success
- *      400:
- *        description: not found
- *      404:
- *        description: A user with the specified ID was not found.
- *      500:
- *        description: Internal Server Error
+ *   get:
+ *     summary: get user by id
+ *     tags: [UserPage]
+ *     description: get user by id
+ *     parameters:
+ *     - name: id
+ *       description: user Id
+ *       in: path
+ *       required: true
+ *       type: string
+ *       example: '20220711000914145000000001'
+ *     responses:
+ *       200:
+ *         description: success
+ *       400:
+ *         description: not found
+ *       404:
+ *         description: A user with the specified ID was not found.
+ *       500:
+ *         description: Internal Server Error
  */
 
 /**
  * @swagger
- *  /admin//user/add:
+ *  /admin/user/add:
  *    post:
  *      tags: [UserPage]
  *      summary: add user
