@@ -6,12 +6,12 @@ const { Category } = require('./../../../models/category');
 class Controller {
   async addCategory(req, res, next) {
     try{
-      console.table(req.body);
-      const {title, parent} = req.body;
-      console.log(title, parent);
+      const reqObj = req.body;
       await addCategorySchema.validateAsync(req.body);
-      console.log(title);
-      const category = await Category.create({title, parent});
+      for (const [key, value] of Object.entries(reqObj)) {
+        value ? null : delete reqObj[key]
+      }
+      const category = await Category.create(reqObj);
       if (!category) throw createError.InternalServerError();
       res.status(HttpStatus.CREATED).json({
         statusCode: HttpStatus.CREATED,
