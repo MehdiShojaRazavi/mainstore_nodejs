@@ -43,3 +43,20 @@
  *        500:
  *          description: Internal Server Error
  */
+/**
+ * @swagger
+ *  /admin/category/parents:
+ *    get:
+ *      tags: [CategoryPage]
+ *      summary: get all category
+ *      description: get all category
+ *      responses:
+ *        201:
+ *          description: success
+ *        400:
+ *          description: not found
+ *        404:
+ *          description: A user with the specified ID was not found.
+ *        500:
+ *          description: Internal Server Error
+ */

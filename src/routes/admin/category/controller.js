@@ -6,11 +6,8 @@ const { Category } = require('./../../../models/category');
 class Controller {
   async addCategory(req, res, next) {
     try{
-      console.table(req.body);
       const {title, parent} = req.body;
-      console.log(title, parent);
       await addCategorySchema.validateAsync(req.body);
-      console.log(title);
       const category = await Category.create({title, parent});
       if (!category) throw createError.InternalServerError();
       res.status(HttpStatus.CREATED).json({
@@ -19,6 +16,23 @@ class Controller {
           category
         },
         message: 'Added category successfully'
+      })
+    }catch(error) {
+      next(error);
+    };
+  };
+  async getAllParents(req, res, next) {
+    try{
+      const category = await Category.aggregate([
+        {$match: {parent: undefined}},
+        {$project: {__v:0}}
+      ]);
+      if (!category) throw createError.InternalServerError();
+      res.status(HttpStatus.OK).json({
+        statusCode: HttpStatus.OK,
+        data : {
+          category
+        }
       })
     }catch(error) {
       next(error);
