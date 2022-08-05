@@ -58,6 +58,35 @@ class Controller {
       next(error);
     };
   };
+  async getAllCategory(req, res, next) {
+    try{
+      const category = await CategoryModel.aggregate([
+        {
+          $lookup:
+          {
+            from: "categories",
+            localField: "_id",
+            foreignField: "parent",
+            as: "children"
+          }
+        },
+        {$project: {
+          __v: 0,
+          "children.__v": 0,
+          "children.parent": 0,
+        }}
+      ]);
+      if (!category) throw createError.InternalServerError();
+      res.status(HttpStatus.OK).json({
+        statusCode: HttpStatus.OK,
+        data : {
+          category
+        }
+      })
+    }catch(error) {
+      next(error);
+    };
+  };
 }
 
 module.exports =  {
