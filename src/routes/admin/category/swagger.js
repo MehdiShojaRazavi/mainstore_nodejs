@@ -43,6 +43,7 @@
  *        500:
  *          description: Internal Server Error
  */
+
 /**
  * @swagger
  *  /admin/category/parents:
@@ -57,6 +58,30 @@
  *          description: not found
  *        404:
  *          description: A user with the specified ID was not found.
+ *        500:
+ *          description: Internal Server Error
+ */
+
+/**
+ * @swagger
+ *  /admin/category/children/{parent}:
+ *    get:
+ *      tags: [CategoryPage]
+ *      summary: get all category
+ *      description: get all category
+ *      parameters:
+ *         -   in: path
+ *             name: parent
+ *             type: string
+ *             description: Enter parentID
+ *             example: 62ea34a2cac9041c8941636a
+ *      responses:
+ *        201:
+ *          description: success
+ *        400:
+ *          description: not found
+ *        404:
+ *          description: A children of category with the specified ParentID was not found.
  *        500:
  *          description: Internal Server Error
  */

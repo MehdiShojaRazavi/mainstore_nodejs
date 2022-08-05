@@ -1,7 +1,7 @@
 const createError = require('http-errors');
 const {StatusCodes: HttpStatus} = require('http-status-codes');
 const {addCategorySchema} = require('./validator');
-const { CategoryModel } = require('./../../../models/category');
+const { Category: CategoryModel } = require('./../../../models/category');
 
 class Controller {
   async addCategory(req, res, next) {
@@ -27,6 +27,26 @@ class Controller {
         {$match: {parent: undefined}},
         {$project: {__v:0}}
       ]);
+      if (!category) throw createError.InternalServerError();
+      res.status(HttpStatus.OK).json({
+        statusCode: HttpStatus.OK,
+        data : {
+          category
+        }
+      })
+    }catch(error) {
+      next(error);
+    };
+  };
+  async getChildOfParents(req, res, next) {
+    try{
+      const {parent} = req.params;
+      console.log(parent);
+      const category = await CategoryModel.find({parent}, {__v: 0, parent: 0});
+      // const category = await CategoryModel.aggregate([
+      //   {$match: {parent}},
+      //   {$project: {__v:0}}
+      // ]);
       if (!category) throw createError.InternalServerError();
       res.status(HttpStatus.OK).json({
         statusCode: HttpStatus.OK,
