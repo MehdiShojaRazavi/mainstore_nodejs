@@ -1,14 +1,14 @@
 const createError = require('http-errors');
 const {StatusCodes: HttpStatus} = require('http-status-codes');
 const {addCategorySchema} = require('./validator');
-const { Category } = require('./../../../models/category');
+const { CategoryModel } = require('./../../../models/category');
 
 class Controller {
   async addCategory(req, res, next) {
     try{
       const {title, parent} = req.body;
       await addCategorySchema.validateAsync(req.body);
-      const category = await Category.create({title, parent});
+      const category = await CategoryModel.create({title, parent});
       if (!category) throw createError.InternalServerError();
       res.status(HttpStatus.CREATED).json({
         statusCode: HttpStatus.CREATED,
@@ -23,7 +23,7 @@ class Controller {
   };
   async getAllParents(req, res, next) {
     try{
-      const category = await Category.aggregate([
+      const category = await CategoryModel.aggregate([
         {$match: {parent: undefined}},
         {$project: {__v:0}}
       ]);
