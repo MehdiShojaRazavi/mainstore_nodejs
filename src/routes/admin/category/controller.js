@@ -1,5 +1,5 @@
 const createError = require('http-errors');
-const {StatusCodes: HttpStatus} = require('http-status-codes');
+const {StatusCodes: HttpStatus, StatusCodes} = require('http-status-codes');
 const {addCategorySchema} = require('./validator');
 const { Category: CategoryModel } = require('./../../../models/category');
 
@@ -87,6 +87,29 @@ class Controller {
       next(error);
     };
   };
+  async removeCategoryById(req, res, next) {
+    try{
+      const {categoryId} = req.params;
+      console.log(categoryId);
+      const category = await this.checkExistCategory(categoryId);
+      const deleteResult = await CategoryModel.deleteOne({_id: category._id});
+      if (deleteResult.deletedCount == 0) throw createError.InternalServerError();
+      res.status(HttpStatus.OK).json({
+        statusCode: HttpStatus.OK,
+        data: {
+          deleteResult,
+          message: 'Delete category successfully'
+        }
+      })
+    }catch(error){
+      next(error);
+    }
+  };
+  async checkExistCategory(categoryId) {
+    const category = await CategoryModel.findById(categoryId);
+    if (!category) throw createError.NotFound('Category not found');
+    return category;
+  }
 }
 
 module.exports =  {
