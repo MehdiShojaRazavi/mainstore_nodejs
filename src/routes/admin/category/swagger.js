@@ -103,3 +103,27 @@
  *        500:
  *          description: Internal Server Error
  */
+
+/**
+ * @swagger
+ *  /admin/category/remove/{categoryId}:
+ *    delete:
+ *      tags: [CategoryPage]
+ *      summary: remove category By Id
+ *      description: remove category with sub category By Id
+ *      parameters:
+ *      -   in: path
+ *          name: categoryId
+ *          type: string
+ *          required: true
+ *          example: 62ea37bc0c07b3e53000015f
+ *      responses:
+ *        201:
+ *          description: success
+ *        400:
+ *          description: not found
+ *        404:
+ *          description: A children of category with the specified ParentID was not found.
+ *        500:
+ *          description: Internal Server Error
+ */
