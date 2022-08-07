@@ -4,7 +4,7 @@ const createError = require('http-errors');
 const {User} = require('./../models/user');
 const { ACCESS_TOKEN_SECRET_KEY, REFRESH_TOKEN_SECRET_KEY } = require("./constants");
 const redisClient = require("../../startup/initRedis");
-
+const {Category: CategoryModel} = require('./../models/category');
 function idGenerator(){
     return moment().format("YYYYMMDDHHmmssSSS") + String(process.hrtime()[1]).padStart(9, 0)
 }
@@ -62,10 +62,16 @@ function verifyRefreshToken(token) {
         });
     });
 };
+async function checkExistCategory(categoryId) {
+    const category = await CategoryModel.findById(categoryId);
+    if (!category) throw createError.NotFound('Category not found');
+    return category;
+};
 module.exports = {
     idGenerator,
     randomNumberGenarator,
     signAccessToken,
     signRefreshToken,
-    verifyRefreshToken
+    verifyRefreshToken,
+    checkExistCategory
 }
