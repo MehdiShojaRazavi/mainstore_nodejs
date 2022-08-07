@@ -1,6 +1,6 @@
 const createError = require('http-errors');
 const {StatusCodes: HttpStatus, StatusCodes} = require('http-status-codes');
-const {addCategorySchema} = require('./validator');
+const {addCategorySchema, removeCategorySchema} = require('./validator');
 const { Category: CategoryModel } = require('./../../../models/category');
 const { checkExistCategory } = require('./../../../utils/functions');
 class Controller {
@@ -74,7 +74,12 @@ class Controller {
           __v: 0,
           "children.__v": 0,
           "children.parent": 0,
-        }}
+        }},
+        {
+          $match: {
+            parent: undefined
+          }
+        }
       ]);
       if (!category) throw createError.InternalServerError();
       res.status(HttpStatus.OK).json({
@@ -89,10 +94,13 @@ class Controller {
   };
   async removeCategoryById(req, res, next) {
     try{
+      await removeCategorySchema.validateAsync(req.params);
       const {categoryId} = req.params;
-      console.log(categoryId);
       const category = await checkExistCategory(categoryId);
-      const deleteResult = await category.deleteOne({_id: category._id});
+      const deleteResult = await category.delete({$or: [
+        {_id: category._id},
+        {parent: category.parent}
+      ]});
       if (deleteResult.deletedCount == 0) throw createError.InternalServerError();
       res.status(HttpStatus.OK).json({
         statusCode: HttpStatus.OK,
