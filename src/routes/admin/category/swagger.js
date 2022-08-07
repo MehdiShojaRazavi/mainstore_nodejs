@@ -1,6 +1,6 @@
 /**
  * @swagger
- * tags: CategoryPage
+ * tags: admin-panel
  * description: Category page section
  */
 
@@ -8,17 +8,17 @@
  * @swagger
  *  components:
  *    schemas:
- *      Add-Category:
- *        type: object
- *        properties: 
- *          title:
- *            type: string
- *            description: Enter title
- *            example: johndoe123 
- *          parent:
- *            type: string
- *            allowEmptyValue: true
- *            description: Enter parent
+ *       Add-Category:
+ *          type: object
+ *          properties:
+ *            title:
+ *              type: string
+ *              description: Enter unique category
+ *              example: johndoe123 
+ *            parent:
+ *              type: string
+ *              description: Enter category Id
+ *              example: 62ea34a2cac9041c8941636a 
  */
 
 /**
