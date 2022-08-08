@@ -67,16 +67,19 @@ class Controller {
         {
           $lookup:
           {
-            from: "categories",
-            localField: "_id",
-            foreignField: "parent",
-            as: "children"
+            from: 'categories',
+            as: 'children',
+            startWith: '$_id',
+            connectFromField: '_id',
+            connectToField: 'parent',
+            maxDepth: 5,
+            depthField: 'depth',
           }
         },
         {$project: {
           __v: 0,
-          "children.__v": 0,
-          "children.parent": 0,
+          'children.__v': 0,
+          'children.parent': 0,
         }},
         {
           $match: {
