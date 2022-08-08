@@ -65,7 +65,7 @@ class Controller {
     try{
       const category = await CategoryModel.aggregate([
         {
-          $lookup:
+          $graphLookup:
           {
             from: 'categories',
             as: 'children',
