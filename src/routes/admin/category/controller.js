@@ -3,6 +3,7 @@ const {StatusCodes: HttpStatus, StatusCodes} = require('http-status-codes');
 const {addCategorySchema, removeCategorySchema} = require('./validator');
 const { Category: CategoryModel } = require('./../../../models/category');
 const { checkExistCategory } = require('./../../../utils/functions');
+const mongoose = require('mongoose');
 class Controller {
   async addCategory(req, res, next) {
     try{
@@ -118,6 +119,35 @@ class Controller {
     }catch(error){
       next(error);
     }
+  };
+  async getCategoryById(req, res, next) {
+    try{
+      const { id } = req.params;
+      console.log(id);
+      const category = await CategoryModel.aggregate([
+        {$match: {_id: mongoose.Types.ObjectId(id)}},
+        {$lookup: {
+            from: 'categories',
+            localField: '_id',
+            foreignField: 'parent',
+            as: 'children',
+        }},
+        {$project: {
+          __v: 0,
+          'children.__v': 0,
+          'children.parent': 0,
+        }}
+      ]);
+      if (!category) throw createError.InternalServerError();
+      res.status(HttpStatus.OK).json({
+        statusCode: HttpStatus.OK,
+        data : {
+          category
+        }
+      })
+    }catch(error) {
+      next(error);
+    };
   };
 }
 
