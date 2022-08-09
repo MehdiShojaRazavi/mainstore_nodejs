@@ -64,30 +64,32 @@ class Controller {
   };
   async getAllCategory(req, res, next) {
     try{
-      const category = await CategoryModel.aggregate([
-        {
-          $graphLookup:
-          {
-            from: 'categories',
-            as: 'children',
-            startWith: '$_id',
-            connectFromField: '_id',
-            connectToField: 'parent',
-            maxDepth: 5,
-            depthField: 'depth',
-          }
-        },
-        {$project: {
-          __v: 0,
-          'children.__v': 0,
-          'children.parent': 0,
-        }},
-        {
-          $match: {
-            parent: undefined
-          }
-        }
-      ]);
+      const category = await CategoryModel.find(
+        {parent: undefined}
+
+        // {
+        //   $graphLookup:
+        //   {
+        //     from: 'categories',
+        //     as: 'children',
+        //     startWith: '$_id',
+        //     connectFromField: '_id',
+        //     connectToField: 'parent',
+        //     maxDepth: 5,
+        //     depthField: 'depth',
+        //   }
+        // },
+        // {$project: {
+        //   __v: 0,
+        //   'children.__v': 0,
+        //   'children.parent': 0,
+        // }},
+        // {
+        //   $match: {
+        //     parent: undefined
+        //   }
+        // }
+      );
       if (!category) throw createError.InternalServerError();
       res.status(HttpStatus.OK).json({
         statusCode: HttpStatus.OK,
