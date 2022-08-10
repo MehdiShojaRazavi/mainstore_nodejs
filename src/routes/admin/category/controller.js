@@ -29,7 +29,7 @@ class Controller {
     try{
       const category = await CategoryModel.aggregate([
         {$match: {parent: undefined}},
-        {$project: {__v:0}}
+        {$project: {__v: 0}}
       ]);
       if (!category) throw createError.InternalServerError();
       res.status(HttpStatus.OK).json({
@@ -90,6 +90,22 @@ class Controller {
         //   }
         // }
       );
+      if (!category) throw createError.InternalServerError();
+      res.status(HttpStatus.OK).json({
+        statusCode: HttpStatus.OK,
+        data : {
+          category
+        }
+      })
+    }catch(error) {
+      next(error);
+    };
+  };
+  async getAllCategoryWithAggregate(req, res, next) {
+    try{
+      const category = await CategoryModel.aggregate([
+        {$match: {}}, {$project: {__v: 0}}
+      ]);
       if (!category) throw createError.InternalServerError();
       res.status(HttpStatus.OK).json({
         statusCode: HttpStatus.OK,
