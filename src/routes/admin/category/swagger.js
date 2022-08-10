@@ -23,6 +23,19 @@
 
 /**
  * @swagger
+ *  components:
+ *    schemas:
+ *       Edit-Category:
+ *          type: object
+ *          properties:
+ *            title:
+ *              type: string
+ *              description: Enter unique category
+ *              example: test category 
+ */
+
+/**
+ * @swagger
  *  /admin/category/add:
  *    post:
  *      tags: [CategoryPage]
@@ -135,6 +148,36 @@
  *          type: string
  *          required: true
  *          example: 62ea37bc0c07b3e53000015f
+ *      responses:
+ *        201:
+ *          description: success
+ *        400:
+ *          description: not found
+ *        404:
+ *          description: A children of category with the specified ParentID was not found.
+ *        500:
+ *          description: Internal Server Error
+ */
+
+
+/**
+ * @swagger
+ *  /admin/category/edit/{categoryId}:
+ *    patch:
+ *      tags: [CategoryPage]
+ *      summary: edit category By Id
+ *      description: edit category with sub category By Id
+ *      parameters:
+ *      -   in: path
+ *          name: categoryId
+ *          type: string
+ *          required: true
+ *          example: 62ea37bc0c07b3e53000015f
+ *      requestBody:
+ *        content:
+ *          application/x-www-form-urlencoded:
+ *            schema:
+ *              $ref: '#/components/schemas/Edit-Category'
  *      responses:
  *        201:
  *          description: success

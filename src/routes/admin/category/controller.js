@@ -1,6 +1,6 @@
 const createError = require('http-errors');
 const {StatusCodes: HttpStatus, StatusCodes} = require('http-status-codes');
-const {addCategorySchema, removeCategorySchema} = require('./validator');
+const {addCategorySchema, idCategorySchema, titleCategorySchema} = require('./validator');
 const { Category: CategoryModel } = require('./../../../models/category');
 const { checkExistCategory } = require('./../../../utils/functions');
 const mongoose = require('mongoose');
@@ -119,7 +119,7 @@ class Controller {
   };
   async removeCategoryById(req, res, next) {
     try{
-      await removeCategorySchema.validateAsync(req.params);
+      await idCategorySchema.validateAsync(req.params);
       const {categoryId} = req.params;
       const category = await checkExistCategory(categoryId);
       const deleteResult = await category.delete({$or: [
@@ -134,6 +134,30 @@ class Controller {
           message: 'Delete category successfully'
         }
       })
+    }catch(error){
+      next(error);
+    }
+  };
+  async editCategoryById(req, res, next) {
+    try{
+      await idCategorySchema.validateAsync(req.params);
+      const {categoryId} = req.params;
+      await titleCategorySchema.validateAsync(req.body);
+      const {title} = req.body;
+      const category = await checkExistCategory(categoryId);
+      const updateResult = await CategoryModel.updateOne(
+        {_id: category._id},
+        {$set: {title}}
+      );
+      console.log(updateResult)
+      if (updateResult.modifiedCount == 0) throw createError.InternalServerError();
+      res.status(HttpStatus.OK).json({
+        statusCode: HttpStatus.OK,
+        data: {
+          updateResult,
+          message: 'Update category successfully'
+        }
+      });
     }catch(error){
       next(error);
     }
@@ -167,6 +191,7 @@ class Controller {
       next(error);
     };
   };
+
 }
 
 module.exports =  {
