@@ -145,7 +145,7 @@ class Controller {
       await titleCategorySchema.validateAsync(req.body);
       const {title} = req.body;
       const category = await checkExistCategory(categoryId);
-      const updateResult = await CategoryModel.updateOne(
+      const updateResult = await category.updateOne(
         {_id: category._id},
         {$set: {title}}
       );
