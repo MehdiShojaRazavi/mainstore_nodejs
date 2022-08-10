@@ -65,7 +65,7 @@ class Controller {
   async getAllCategory(req, res, next) {
     try{
       const category = await CategoryModel.find(
-        {parent: undefined}
+        {parent: undefined}, {__v: 0}
 
         // {
         //   $graphLookup:
