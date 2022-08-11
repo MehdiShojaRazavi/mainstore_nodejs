@@ -7,13 +7,16 @@ const BlogSchema = new mongoose.Schema({
   text: {type: String, required: true},
   image: {type: String, required: true},
   tags: {type: [String], required: true},
-  category: {type: mongoose.type.ObjectId, ref: 'category', required: true},
+  category: {type: [mongoose.type.ObjectId], ref: 'category', required: true},
   comments: {type: [commentSchema], default: []},
   likes: {type: [mongoose.Types.ObjectId], ref: 'user', default: []},
   deslikes: {type: [mongoose.Types.ObjectId], ref: 'user', default: []},
   bookmarks: {type: [mongoose.Types.ObjectId], ref: 'user', default: []},
+}, {
+  timestamps: true,
+  versionKey: false
 });
 const Blog = mongoose.model('blog', BlogSchema);
 module.exports = {
-  Blog
+  BlogModel
 };
