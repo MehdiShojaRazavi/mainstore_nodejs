@@ -7,13 +7,13 @@ module.exports = class Logging{
     process.on('uncaughtException', (ex)=>{
       debug(ex);
       winston.error(ex.message, ex);
-      //process.exit(1);
+      process.exit(0);
     });
 
     process.on('unhandledRejection', (ex)=>{
       debug(ex);
       winston.error(e.message, ex);
-      // process.exit(1)
+      process.exit(0);
     });
 
     winston.add(new winston.transports.File({filename: 'logfile.log'}));
